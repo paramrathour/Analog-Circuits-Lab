@@ -1,0 +1,32 @@
+Param Rathour (190070049), Midband Voltage Gain and Frequency Response
+
+.include bc547.txt                                  ; Includes BJT Model
+Q1 c b e bc547a
+Vin in gnd dc 0 ac 10m                              ; Input Voltage
+VCC Vcc gnd 12                                      ; Supply Voltage
+
+RC Vcc c 1.2k                                       ; Resistor
+R1 Vcc b 10k                                        ; Resistor
+R2 b gnd 2.2k                                       ; Resistor
+RL out gnd 100k                                     ; Resistor
+RE e gnd 1k                                         ; Resistor
+RS Vs in 0                                          ; Resistor
+CE e gnd 100u                                       ; Capacitor
+C1 b Vs 10u                                         ; Capacitor
+C2 c out 10u                                        ; Capacitor
+
+.ac DEC 10 1 500000k                                ; AC Analysis
+.control                                            ; Control Functions
+run
+meas ac Voutmax max vdb(out)
+meas ac Vinmag max vdb(in)
+let Vdbreq = Voutmax-3
+meas ac fL when vdb(out) = Vdbreq rise = 1
+meas ac fH when vdb(out) = Vdbreq fall = 1
+
+let midbandVoltageGain = Voutmax-Vinmag
+let bandwidth = fH - fL
+plot vdb(in) vdb(out) xlog 
+print midbandVoltageGain fL fH bandwidth
+.endc
+.end

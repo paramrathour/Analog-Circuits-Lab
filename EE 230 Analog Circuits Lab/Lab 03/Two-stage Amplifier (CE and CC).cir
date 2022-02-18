@@ -1,0 +1,31 @@
+Param Rathour (190070049), Biasing Circuit, Midband Voltage Gain and Frequency Response
+.include bc547.txt                                  ; Includes BJT Model
+Q1 c1 b1 e1 bc547a
+Q2 VCC b2 e2 bc547a
+Vin in gnd dc 0 ac 1                                ; Input Voltage
+VCC Vcc gnd 12                                      ; Supply Voltage
+Vdb2 c1 b2 0                                        ; Dummy Voltage
+Vde2 e2 d1 0                                        ; Dummy Voltage
+RC Vcc c1 1.2k                                      ; Resistor
+R1 Vcc b1 10k                                       ; Resistor
+R2 b1 gnd 2.2k                                      ; Resistor
+RL out gnd 10k                                      ; Resistor
+RE e1 gnd 1k                                        ; Resistor
+RE2 d1 gnd 10k                                      ; Resistor
+RS Vs in 0                                          ; Resistor
+C1 b1 Vs 10u                                        ; Capacitor
+C2 e2 out 10u                                       ; Capacitor
+CE e1 gnd 100u                                      ; Capacitor
+.ac DEC 10 1 500000k                                ; AC Analysis (.op for biasing)
+.control                                            ; Control Functions
+run
+meas ac Voutmax max vdb(out)
+meas ac Vinmag max vdb(in)
+let Vdbreq = Voutmax-3
+meas ac fL when vdb(out) = Vdbreq rise = 1
+meas ac fH when vdb(out) = Vdbreq fall = 1
+let midbandVoltageGain = Voutmax-Vinmag
+let bandwidth = fH - fL
+print V(e2) i(Vdb2) i(Vde2)                         ; Use when using .op
+plot vdb(in) vdb(out) xlog 
+print midbandVoltageGain fL fH bandwidth

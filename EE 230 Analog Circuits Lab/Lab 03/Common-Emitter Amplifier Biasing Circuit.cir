@@ -1,0 +1,21 @@
+Param Rathour (190070049), Biasing Circuit
+
+.include bc547.txt                                  ; Includes BJT Model
+Q1 c b e bc547a
+VCC in gnd 12                                       ; Supply Voltage
+Vdc d1 c 0                                          ; Dummy Voltage for IB
+Vdb mid b 0                                         ; Dummy Voltage for IC
+
+RC in d1 1.2k                                       ; Resistor
+R1 in mid 10k                                       ; Resistor
+R2 mid gnd 2.2k                                     ; Resistor
+RE e gnd 1k                                         ; Resistor
+CE e gnd 100u                                       ; Capacitor
+
+.op                                                 ; Operating Point Analysis
+.control                                            ; Control Functions
+run
+print v(c) v(b) v(e)
+print i(Vdc) i(Vdb)
+.endc
+.end
