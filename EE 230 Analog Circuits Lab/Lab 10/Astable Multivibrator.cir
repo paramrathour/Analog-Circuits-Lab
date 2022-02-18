@@ -1,0 +1,27 @@
+Param Rathour (190070049), Astable Multivibrator
+
+.include zener_B.txt
+.include ua741.txt           					: Includes Op-amp Model
+
+VCCp VCCp gnd 12             					: Supply Voltage
+VCCn VCCn gnd -12            					: Supply Voltage
+x1 Vp Vn VCCp VCCn Vo1 ua741 					: Operational Amplifier
+x2 Vo Vm zener_B
+x3 gnd Vm zener_B
+RG Vn Vo 10k                 					: Resistor
+CG Vn gnd 0.1u               					: Capacitor
+R3 Vo1 Vo 100                					: Resistor
+R1 Vp Vo 10k                 					: Resistor
+R2 Vp gnd 10k                					: Resistor
+
+.tran 0.01m 525m 500m        					: Transient Analysis
+.control                     					: Control Functions
+run
+meas trans VIH max V(Vn)
+meas trans VIL min V(Vn)
+meas trans VOH max V(Vo)
+meas trans VOL min V(Vo)
+plot V(Vn) V(Vo)
+print VIH VIL VOH VOL
+.endc
+.end

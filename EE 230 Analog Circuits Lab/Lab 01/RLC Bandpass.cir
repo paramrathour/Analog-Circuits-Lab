@@ -1,0 +1,35 @@
+Param Rathour (190070049), RLC Bandpass
+* Elements
+* For Input Voltage as sin Wave with amplitude = 1V and Frequency Range 1Hz - 10000kHz
+Vin in gnd dc 0 ac 1
+L1 in mid 10m
+C1 mid out 0.1u
+R1 out gnd 1k
+
+.ac DEC 10 1 10000k
+* Analysis
+.control
+
+run
+meas ac Vdbmax max vdb(out)
+let vbyroot2 = Vdbmax-3
+meas ac fc when vdb(out) = Vdbmax 
+meas ac fL when vdb(out) = vbyroot2 rise = 1      
+meas ac fH when vdb(out) = vbyroot2 fall = 1
+
+* Display
+print fc
+print fL
+print fH
+plot vdb(out) xlog
+.endc
+.end
+
+* No. of Data Rows : 71
+* vdbmax              =  -3.051282e-05 at=  5.011872e+03
+* fc                  =  5.011872e+03
+* fl                  =  1.476560e+03
+* fh                  =  1.735767e+04
+* fc = 5.011872e+03
+* fl = 1.476560e+03
+* fh = 1.735767e+04

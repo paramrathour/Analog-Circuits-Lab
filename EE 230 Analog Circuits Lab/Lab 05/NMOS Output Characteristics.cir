@@ -1,0 +1,15 @@
+Param Rathour (190070049), NGSPICE Simulation of MOSFET Circuits
+.model NXYAA5U nmos Level=1 Vto=0.7 KP=118.34u w=10u L=1u + Gamma=0 Phi=0.65 Lambda=0.0
+M1 d g gnd gnd NXYAA5U
+VDD Vdd gnd 10                                      ; Supply Voltage
+V2 V2 gnd 5
+Vdum V2 Vdum 0
+R1 Vdd g 2.2k                                       ; Resistor
+R2 g gnd 550                                        ; Resistor
+RD d Vdum 2.2k                                      ; Resistor
+.dc V2 0 50 0.01                                    ; DC Analysis
+.control                                            ; Control Functions
+run
+plot I(Vdum) vs V(d)
+.endc
+.end

@@ -1,0 +1,18 @@
+Param Rathour (190070049), RC Highpass
+* Elements
+* For Input Voltage as sin Wave with amplitude = 1V and Frequency Range 1Hz - 10kHz
+Vin in gnd dc 0 ac 1
+C1 in out 0.1u
+R1 out gnd 10k
+
+.ac DEC 10 1 10k
+
+* Analysis
+.control
+run
+
+* Display
+plot V(in) V(out)
+.endc
+
+.end

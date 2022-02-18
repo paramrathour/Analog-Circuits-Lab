@@ -1,0 +1,24 @@
+Param Rathour (190070049), Phase-shift Oscillator
+
+.include IN914.txt           					: Includes Diode Model
+.include ua741.txt           					: Includes Op-amp Model
+
+VCCp VCCp gnd 12             					: Supply Voltage
+VCCn VCCn gnd -12            					: Supply Voltage
+x1 gnd Vn VCCp VCCn Vo ua741 					: Operational Amplifier
+
+C1 Vn Vm1 0.022u             					: Capacitor
+R1 Vm1 gnd 10k               					: Resistor
+C2 Vm1 Vm2 0.022u            					: Capacitor
+R2 Vm2 gnd 10k               					: Resistor
+C3 Vm2 Vo 0.022u             					: Capacitor
+RF Vn Vo 200k                					: Resistor
+
+.tran 0.01m 525m 500m        					: Transient Analysis
+.control                     					: Control Functions
+run
+meas trans Vpeak max V(Vo)
+plot V(Vo)
+
+.endc
+.end

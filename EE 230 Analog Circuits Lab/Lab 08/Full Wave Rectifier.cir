@@ -1,0 +1,27 @@
+Param Rathour (190070049), Full Wave Rectifier
+
+.include IN914.txt             					; Includes Diode Model
+.include ua741.txt             					; Includes Op-amp Model
+
+* Vi Vi gnd dc 0 ac 1          					; Input Voltage
+Vi Vi gnd sin(0 1 5000 0 0)    					; Input Voltage
+VCCp VCCp gnd 12               					; Supply Voltage
+VCCn VCCn gnd -12              					; Supply Voltage
+x1 gnd Vn1 VCCp VCCn Vo1 ua741 					; Operational Amplifier
+x2 gnd Vn2 VCCp VCCn Vo ua741  					; Operational Amplifier
+d1 Vo1 Vn1 1N914               					; Diode
+d2 Vo2 Vo1 1N914               					; Diode
+R1 Vi Vn1 10k                  					; Resistor
+R2 Vn1 Vo2 10k                 					; Resistor
+R3 Vi Vn2 10k                  					; Resistor
+R4 Vo2 Vn2 5k                  					; Resistor
+R5 Vn2 Vo 5k                   					; Resistor
+RL Vo gnd 1k                   					; Resistor
+.tran 0.1m 30m                 					; Transient Analysis (100Hz)
+* .tran 0.02m 0.6m             					; Transient Analysis (5kHz)
+.control                       					; Control Functions
+run
+plot V(Vi) V(Vo)
+plot V(Vo) vs V(Vi)
+.endc
+.end

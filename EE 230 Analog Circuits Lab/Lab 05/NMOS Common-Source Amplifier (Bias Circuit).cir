@@ -1,0 +1,19 @@
+Param Rathour (190070049), Common-Source Amplifier (Bias Circuit)
+
+.model NXYAA5U nmos Level=1 Vto=1 KP=100u w=10u L=1u + Gamma=0 Phi=0.65 Lambda=0.0
+
+M1 d g s gnd NXYAA5U
+VDD Vdd gnd 12                                      ; Supply Voltage
+Vdum Vdd Vdum 0
+
+R1 Vdd g 8.2k                                       ; Resistor
+R2 g gnd 3.3k                                       ; Resistor
+RD d Vdum 3.3k                                      ; Resistor
+RS s gnd 1k                                         ; Resistor
+
+.op                                                 ; Operating Point Analysis
+.control                                            ; Control Functions
+run
+print v(g) v(d) v(s) I(Vdum)
+.endc
+.end

@@ -1,0 +1,22 @@
+Param Rathour (190070049), Single-pole Active Low-pass Filter
+.include ua741.txt             					; Includes Op-amp Model
+Vi Vi gnd dc 0 ac 1m           					; Input Voltage
+VCCp VCCp gnd 12               					; Supply Voltage
+VCCn VCCn gnd -12              					; Supply Voltage
+x1 Vp Vn VCCp VCCn Vo ua741    					; Operational Amplifier
+RA Vi Vp 4.7k                  					; Resistor
+CA Vp gnd 0.1u                 					; Capacitor
+R1 Vn Vo 9.1k                  					; Resistor
+R2 Vn gnd 1k                   					; Resistor
+.ac DEC 100 1 100k             					; AC Analysis
+.control                       					; Control Functions
+run
+meas ac Vdbmax max vdb(Vo)
+let Vdbreq = Vdbmax-3
+meas ac fC when vdb(Vo) = Vdbreq fall = 1
+meas ac V1 find Vdb(Vo) at = 1000
+meas ac V2 find Vdb(Vo) at = 10000
+let RollOff =  V2 - V1
+print fC RollOff
+.endc
+.end

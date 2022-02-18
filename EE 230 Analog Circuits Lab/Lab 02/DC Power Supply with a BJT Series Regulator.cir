@@ -1,0 +1,27 @@
+Param Rathour (190070049), DC Power Supply with a BJT Series Regulator
+.include bc547.txt  						; Includes BC547 Model
+.include SL100.txt  						; Includes SL100 Model
+.subckt zener_5 1 2 						; Zener Diode Subcircuit
+ D1 1 2 DF
+ DZ 3 1 DR
+ VZ 2 3 4.4
+.model DF D (IS=27.5p RS=0.620 N=1.10 CJO=78.3p VJ=1.00 M=0.330 TT=50.1n)
+.model DR D (IS=5.49f RS=50 N=1.77)
+.ends
+
+* Elements
+Vin in gnd 20       						; Input Voltage
+Q1 in b1 out SL100
+Q2 b1 b2 Vz bc547a
+RC in b1 1k         						; Resistors
+R1 out b2 10.5k
+R2 b2 gnd 14.5k
+RL out gnd 1k
+XZ gnd Vz zener_5   						; Zener Diode
+
+.dc Vin 15 25 0.5   						; DC Analysis
+.control            						; Control Functions
+run
+print V(in) V(out)  						
+.endc
+.end

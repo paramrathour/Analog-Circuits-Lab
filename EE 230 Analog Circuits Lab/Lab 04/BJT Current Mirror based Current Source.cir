@@ -1,0 +1,13 @@
+Param Rathour (190070049), BJT Current Mirror based Current Source
+.include bc547Va80.txt            ; Includes BJT Model with V_A = 80 (similar file for V_A = 200)
+Q1 b1 b1 gnd bc547a
+Q2 c2 b1 gnd bc547a
+VCC Vcc gnd 12                                      ; Supply Voltage
+Vo c2 gnd 1                                         ; Early Voltage V_O = 1V (similar for V_O = 5V)
+R Vcc b1 10k                                        ; Resistor
+.dc Vo 1 5 0.                                       ; DC Analysis ((sweep V_O))
+.control                                            ; Control Functions
+run
+plot I(Vo)
+.endc
+.end

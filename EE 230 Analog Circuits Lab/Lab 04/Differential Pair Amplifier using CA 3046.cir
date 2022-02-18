@@ -1,0 +1,27 @@
+Param Rathour (190070049), Differential Pair Amplifier
+
+.include bc547.txt                                  ; Includes BJT Model
+Q1 c1 b1 e bc547a
+Q2 c2 b2 e bc547a
+VCC VCC gnd 12                                      ; Supply Voltage
+VEE VEE gnd -12                                     ; Supply Voltage
+Vin1 Vin1 gnd dc 0 ac 10m                           ; Voltage
+Vin2 Vin2 gnd dc 0 ac 0                             ; Voltage
+VC1 V01 c1 0                                        ; Dummy Voltage
+VC2 V02 c2 0                                        ; Dummy Voltage
+VE e VdE 0                                          ; Dummy Voltage
+RC1 VCC c1 6.8k                                     ; Resistor
+RC2 VCC c2 6.8k                                     ; Resistor
+RB1 b1 Vin1 1k                                      ; Resistor
+RB2 b2 Vin2 1k                                      ; Resistor
+RE VdE VEE 10k                                      ; Resistor
+.ac DEC 10 1 500000k                                ; Transient Analysis
+.control                                            ; Control Functions
+run
+plot Vdb(Vin1) Vdb(V01) Vdb(V02)
+meas ac Vdb01pp max vdb(V01)
+meas ac Vdbinpp max vdb(Vin1)
+let Gain = Vdb01pp - Vdbinpp
+print Gain
+.endc
+.end

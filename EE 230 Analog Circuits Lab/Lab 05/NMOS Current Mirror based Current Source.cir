@@ -1,0 +1,20 @@
+Param Rathour (190070049), NMOS Current Mirror based Current Source
+
+.model NXYAA5U nmos Level=1 Vto=1 KP=100u w=10u L=1u + Gamma=0 Phi=0.65 Lambda=0.01
+
+M1 d1 d1 gnd gnd NXYAA5U
+M2 VdO d1 gnd gnd NXYAA5U
+VDD Vdd gnd 12                                      ; Supply Voltage
+VdRef Vdd VdRef 0
+Vo Vo gnd 1                                         ; Voltage
+VdO Vo VdO 0
+
+R VdRef d1 8.2k                                     ; Resistor
+
+.dc Vo 1 5 0.2                                      ; DC Analysis
+.control                                            ; Control Functions
+run
+print I(VdRef) I(VdO)
+plot I(VdRef) I(VdO)
+.endc
+.end

@@ -1,0 +1,23 @@
+Param Rathour (190070049), Improved Half Wave Rectifier A
+
+.include IN914.txt             					; Includes Diode Model
+.include ua741.txt             					; Includes Op-amp Model
+
+Vi Vi gnd sin(0 1 100 0 0)     					; Input Voltage
+VCCp VCCp gnd 12               					; Supply Voltage
+VCCn VCCn gnd -12              					; Supply Voltage
+x1 gnd Vn VCCp VCCn Vo1 ua741  					; Operational Amplifier
+d1 Vn Vo1 IN914                					; Diode
+d2 Vo1 Vo IN914                					; Diode
+
+R1 Vi Vn 10k                   					; Resistor
+R2 Vn Vo 10k                   					; Resistor
+RL Vo gnd 1k                   					; Resistor
+
+.tran 0.1m 30m                 					; Transient Analysis
+.control                       					; Control Functions
+run
+plot V(Vi) V(Vo)
+plot V(Vo) vs V(Vi)
+.endc
+.end

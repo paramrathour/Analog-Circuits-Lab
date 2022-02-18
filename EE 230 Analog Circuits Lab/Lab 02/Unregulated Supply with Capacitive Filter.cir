@@ -1,0 +1,26 @@
+Param Rathour (190070049), Unregulated Supply with a Capacitive Filter
+.include Diode_1N914.txt       				; Includes Diode Model
+.param Vpeak = {15*sqrt(2)}    				; Peak Voltage
+
+* Elements
+Vin in mid sin(0 Vpeak 50 0 0) 				; Input Voltage
+Vd1 in d1 0                    				; Dummy Voltages
+Vd3 mid d3 0
+
+D1 d1 out 1N914                				; Diodes
+D2 gnd in 1N914
+D3 d3 out 1N914
+D4 gnd mid 1N914
+
+RL out gnd 1k                  				; Resistor
+C1 out gnd 100u                				; Capacitor
+
+.tran 0.01m 50m                				; Transient Analysis
+
+.control                       				; Control Functions
+run
+
+plot v(out) 
+plot i(Vd1) i(Vd3)
+.endc
+.end

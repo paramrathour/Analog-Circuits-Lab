@@ -1,0 +1,29 @@
+Param Rathour (190070049), DC Power Supply with Zener Diode Regulator
+.include Diode_1N914.txt 							; Includes Diode Model
+
+.subckt zener_12 1       							; Zener Diode Subcircuit
+ D1 1 2 DF
+ DZ 3 1 DR
+ VZ 2 3 10.8
+.model DF D (IS=27.5p RS=0.620 N=1.10 CJO=78.3p VJ=1.00 M=0.330 TT=50.1n)
+.model DR D (IS=5.49f RS=50 N=1.77)
+.ends
+
+* Elements
+Vin in gnd               							; Input Voltage
+VS mids out              							; Dummy Voltages
+VZ out midz 0
+VL out midl 0
+
+RS in mids 470
+RL midl gnd 1k
+XZ gnd midz zener_       							; Zener Diode
+
+.dc Vin 15 25 0.5        							; DC Analysis
+
+.control                 							; Control Functions
+run
+
+print V(out) I(VS) I(VZ) I(VL)
+.endc
+.end

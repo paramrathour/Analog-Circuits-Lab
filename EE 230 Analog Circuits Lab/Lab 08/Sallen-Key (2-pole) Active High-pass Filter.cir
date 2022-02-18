@@ -1,0 +1,25 @@
+Param Rathour (190070049), Sallen-Key (2-pole) Active High-pass Filter
+.include ua741.txt             					; Includes Op-amp Model
+Vi Vi gnd dc 0 ac 1m           					; Input Voltage
+VCCp VCCp gnd 12               					; Supply Voltage
+VCCn VCCn gnd -12              					; Supply Voltage
+x1 Vp Vn VCCp VCCn Vo ua741    					; Operational Amplifier
+RA mid Vo 4.7k                 					; Resistor
+CA Vi mid 0.1u                 					; Capacitor
+RB Vp gnd 4.7k                 					; Resistor
+CB mid Vp 0.1u                 					; Capacitor
+R1 Vn Vo 9.1k                  					; Resistor
+R2 Vn gnd 1k                   					; Resistor
+.ac DEC 100 1 100k             					; AC Analysis
+.control                       					; Control Functions
+run
+plot Vdb(Vo)
+meas ac Vdbmax max vdb(Vo)
+let Vdbreq = Vdbmax-3
+meas ac fC when vdb(Vo) = Vdbreq rise = 1
+meas ac V1 find Vdb(Vo) at = 10
+meas ac V2 find Vdb(Vo) at = 100
+let RollOff =  V2 - V1
+print fC RollOff
+.endc
+.end
