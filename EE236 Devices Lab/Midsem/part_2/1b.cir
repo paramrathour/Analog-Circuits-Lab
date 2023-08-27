@@ -1,0 +1,23 @@
+Param Rathour (190070049), I/V characteristics of Diode 1N914
+
+.include Diode_1N914.txt ; Includes Diode Model
+R1 in mid1 100              ; Resistor
+R2 mid1 gnd 1k              ; Resistor
+R3 mid3 gnd 100             ; Resistor
+D1 mid1 midR 1N914          ; Diode
+VdR midR mid3 0             ; Dummy Voltage to measure I_d
+Vin in gnd dc 0             ; DC source Vin
+.dc Vin -10000 5 0.01            ; DC Analysis
+.control
+run
+let Vout = {V(mid1) - V(mid3)}
+plot I(VdR) vs Vout
+let I1 = 100u
+meas dc VmI1 FIND Vout  WHEN I(VdR) = I1
+print VmI1
+let I2 = -100u
+meas dc VmI2 FIND Vout  WHEN I(VdR) = I2
+print VmI2
+* wrdata R.txt I(VdR) {V(mid1) - V(mid3)}
+.endc
+.end

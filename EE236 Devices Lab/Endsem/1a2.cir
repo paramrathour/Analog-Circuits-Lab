@@ -1,0 +1,13 @@
+Param Rathour (190070049), BJT Parameters in CE configuration
+.include BC547a.txt ; Includes BJT
+Q1 c b e bc547a
+Vce mid e 3
+Ib gnd b 0.1m
+Vdummy c mid 0
+.dc temp 25 55 10          ; DC Analysis
+.control
+run
+let I_C = -I(Vdummy)
+plot I_C
+.endc
+.end

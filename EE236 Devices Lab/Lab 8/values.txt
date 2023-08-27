@@ -1,0 +1,34 @@
+Part 1
+a)
+early voltage = 72.96948758206197V
+α = 0.9910952747123186
+β = 116.12236639056505
+reverse β = 6.220647099196276
+
+b)
+α = 0.9772565947228588
+β = 47.54815862429751
+reverse β = 4.335056329929236
+
+Part 3
+g_m = 1.730769e-01 = 173m℧
+rpi = 6.096300e+02 = 609Ω
+ro = 1.648099e+04 = 16.48kΩ
+
+Part 4
+Turn off times
+
+BC547a
+1kHz 5.3us
+100kHz 4.7815us
+1MHz No turn off
+
+2N3904c
+1kHz 0.36us
+100kHz 0.4234us
+1MHz 0.404us
+
+BC547a with Schottky diode
+1kHz 0.36us
+100kHz 0.42845us
+1MHz 0.275487us

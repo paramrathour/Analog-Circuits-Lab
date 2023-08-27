@@ -1,0 +1,20 @@
+Param Rathour (190070049), Switching behaviour
+.include BC547.txt ; Includes BJT
+.include BAT54.txt ; Includes Schottky diode
+Q1 c b e bc547a
+xR b c BAT54
+Rb in b 1k
+Vin in gnd pulse(0 5 0 0 0 0.5m 1m)
+Vdd dd gnd 5
+Rc dd c 1k
+Ve e gnd 0
+.tran 1u 5m
+.control
+run
+plot V(c) V(in)
+let I_C = -I(Vdd)
+let I_B = -I(Vin)
+plot I_C, I_B
+.endc
+.end
+* 502.22 - 501.86 = 0.36us

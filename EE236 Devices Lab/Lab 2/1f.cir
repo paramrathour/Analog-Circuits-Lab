@@ -1,0 +1,20 @@
+Param Rathour (190070049), Simple application circuit using diode and capacitor: Voltage Doubler
+
+.include Diode_1N914.txt   ; Includes Diode Model
+R1 out gnd 4.7k               ; Resistor (assumed 1k)
+C1 mid in 10u               ; Capacitor
+C2 out gnd 10u               ; Capacitor
+D1 gnd mid 1N914           ; Diode
+D2 mid out 1N914           ; Diode
+Vin in gnd sin(0 10 1k 0 0) ; AC source Vin
+.tran 0.01m 10m             ; Transient Analysis
+.control
+run
+* plot {V(inp)-V(inn)} V(out)
+plot V(out)
+plot {V(mid)-V(in)}
+
+hardcopy 1f1.eps V(out)
+hardcopy 1f2.eps {V(mid)-V(in)}
+.endc
+.end

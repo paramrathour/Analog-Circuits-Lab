@@ -1,0 +1,21 @@
+Param Rathour (190070049), Gummel Plot
+.include BC547.txt ; Includes BJT
+Q1 c b e bc547a
+R1 mid c 100
+Ib gnd dummy 0
+Vdum dummy b 0
+V2 mid gnd 5
+V1 e gnd 0
+.dc Ib 0.01u 5m 0.1u          ; DC Analysis
+* .dc Ib 2u 0.2m 0.1u          ; DC Analysis
+* .dc Ib 0.01u 100m 0.1u          ; DC Analysis
+.control
+run
+let I_C = -I(V2)
+let I_B = I(Vdum)
+let V_BE = {V(b) - V(e)}
+let beta = {I_C/I_B}
+plot I_C, I_B vs V_BE ylog
+plot beta vs I_C ;xlog
+.endc
+.end

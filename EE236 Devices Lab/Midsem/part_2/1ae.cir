@@ -1,0 +1,28 @@
+Param Rathour (190070049), I/V characteristics of Diode RN142S
+
+.include RN142S.txt ; Includes Diode Model
+R1 in mid1 100              ; Resistor
+R2 mid1 gnd 1k              ; Resistor
+R3 mid3 gnd 100             ; Resistor
+D1 mid1 midR DRN142S          ; Diode
+VdR midR mid3 0             ; Dummy Voltage to measure I_d
+Vin in gnd dc 0             ; DC source Vin
+.dc Vin 0 5 0.01            ; DC Analysis
+.control
+run
+let Vout = {V(mid1) - V(mid3)}
+plot log(abs(I(VdR))) vs Vout
+let VD1 = 0.2
+let VD2 = 0.8
+meas dc ID1 FIND I(VdR) WHEN Vout = VD1
+meas dc ID2 FIND I(VdR) WHEN Vout = VD2
+let lnID1 = log(ID1)
+let lnID2 = log(ID2)
+let slope = (lnID2 - lnID1) / (VD2 - VD1)
+let yintercept = lnID1 - slope * VD1
+let eta = (VD2 - VD1) / ((26/1000) * (lnID2 - lnID1))
+* print lnID2 - lnID1
+print eta, exp(yintercept)
+* wrdata R.txt I(VdR) {V(mid1) - V(mid3)}
+.endc
+.end

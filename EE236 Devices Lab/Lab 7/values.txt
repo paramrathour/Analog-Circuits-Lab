@@ -1,0 +1,18 @@
+Check 190070049_190070048.pdf for measurements
+Zener
+Break-down Voltage = 5.31V
+NMOS
+Part 1
+
+Using Polyfit
+V_T = 0.4452396758207092 V
+g_m max at 1.593V = 0.1501103670847114 m℧
+Subthreshold Slope = 111.99463374192149 mV/decade
+
+Part 2
+r_o = [45, 37.5, 37]kΩ for V_GS = [2.52, 3.01, 3.51]V
+V_A = [-46.60981597 -68.34507439 -70.66927649]V for V_GS = [2.52, 3.01, 3.51]V
+V_A_mean = 61.87472228159754V
+
+Part 4
+g_m =  21.0 m℧

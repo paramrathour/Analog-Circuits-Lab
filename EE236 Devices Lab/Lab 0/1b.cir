@@ -1,0 +1,13 @@
+Param Rathour (190070049), Shunt Clipper DC analysis with reverse battery polarity
+
+.include Diode_1N914.txt   ; Includes Diode Model
+R1 out in 1k               ; Resistor (assumed 1k)
+D1 out mid 1N914           ; Diode
+Vdc mid gnd dc -2          ; Independent DC source
+Vin in gnd sin(0 5 1k 0 0) ; AC source Vin
+.tran 0.01m 6m             ; Transient Analysis
+.control
+run
+plot V(in) V(out)
+plot V(out) vs V(in)
+.endc

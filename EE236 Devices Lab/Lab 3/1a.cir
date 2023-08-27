@@ -1,0 +1,25 @@
+Param Rathour (190070049), I/V characteristics of Solar Cell
+
+.include Solar_Cell.txt ; Includes Solar Cell Model
+
+R1 mid out 100
+X1 out gnd solar_cell IL_val = 0          	; Solar Cell
+Vin in gnd dc 0             ; DC source Vin
+Vdummy in mid 0;
+.dc Vin -2 2 0.01            ; DC Analysis
+.control
+run
+plot I(Vdummy) vs V(out)
+plot log(abs(I(Vdummy))) vs V(out)
+let VD1 = 0.15
+let VD2 = 0.4
+meas dc ID1 FIND I(Vdummy) WHEN V(out) = VD1
+meas dc ID2 FIND I(Vdummy) WHEN V(out) = VD2
+let lnID1 = log(ID1)
+let lnID2 = log(ID2)
+let slope = (lnID2 - lnID1) / (VD2 - VD1)
+* let yintercept = lnID1 - slope * VD1
+let eta = (VD2 - VD1) / ((26/1000) * (lnID2 - lnID1))
+print eta;, exp(yintercept)
+.endc
+.end

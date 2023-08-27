@@ -1,0 +1,16 @@
+Param Rathour (190070049), CMOS Inverter
+.include CMOS.txt ; Includes Solar Cell Model
+.param Wn = {60u} Wp = {60u} Len = {0.4u}
+* M drain gate source body cmos
+Mn out in gnd gnd cmosn L=Len W=Wn AS={2*Wn*Len} PS={2*Wn+4*Len} AD={2*Wn*Len} PD={2*Wn+4*Len}
+Mp out in Vdd Vdd cmosp L=Len W=Wp AS={2*Wp*Len} PS={2*Wp+4*Len} AD={2*Wp*Len} PD={2*Wp+4*Len}
+C1 out gnd 0.05p
+Vdd Vdd gnd 3.3
+Vin in gnd 0
+.dc Vin 0 3.3 0.01
+.control
+run
+plot V(out) vs V(in)
+wrdata 412.txt V(out) vs V(in)
+.endc
+.end

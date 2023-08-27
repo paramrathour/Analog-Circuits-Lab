@@ -1,0 +1,36 @@
+Param Rathour (190070049), CMOS Inverter
+.include CMOS.txt ; Includes Solar Cell Model
+.param Wn = {60u} Wp = {30u} Len = {0.4u}
+.param Vd = 3.3
+* M drain gate source body cmos
+Mn out in gnd gnd cmosn L=Len W=Wn AS={2*Wn*Len} PS={2*Wn+4*Len} AD={2*Wn*Len} PD={2*Wn+4*Len}
+Mp out in Vdd Vdd cmosp L=Len W=Wp AS={2*Wp*Len} PS={2*Wp+4*Len} AD={2*Wp*Len} PD={2*Wp+4*Len}
+C1 out gnd 0.05p
+Vdd Vdd gnd Vd
+Vin in gnd pulse(0 Vd 0 20p 20p 4n 8n)
+* .dc Vin 0 Vd 0.01
+.tran 1p 30n
+.control
+let Vddd = 3.3
+run
+let l = {Vddd*0.1}
+let h = {Vddd*0.9}
+let mid = {Vddd*0.5}
+meas tran tr1 WHEN V(out) = l CROSS = 2 
+meas tran tr2 WHEN V(out) = h CROSS = 2 
+let tr = tr2-tr1
+meas tran tf1 WHEN V(out) = l CROSS = 3 
+meas tran tf2 WHEN V(out) = h CROSS = 3 
+let tf = tf1-tf2
+meas tran tpr1 WHEN V(in) = mid CROSS = 2
+meas tran tpr2 WHEN V(out) = mid CROSS = 2
+let tpr = tpr2-tpr1
+meas tran tpf1 WHEN V(in) = mid CROSS = 3
+meas tran tpf2 WHEN V(out) = mid CROSS = 3
+let tpf = tpf2-tpf1
+let tp = (tpr + tpf)/2
+print tr tf tpr tpf tp
+plot V(out) V(in)
+wrdata 433.txt V(out); V(in)
+.endc
+.end

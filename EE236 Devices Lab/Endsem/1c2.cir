@@ -1,0 +1,17 @@
+Param Rathour (190070049), Switching behaviour
+.include NMOSFET.txt ; Includes Solar Cell Model
+M1 d g gnd gnd NMOSFET
+Vdd dd gnd 5
+Rd dd d 1k
+Vdummy d mid 0
+Rg in g 1k
+Vin in gnd pulse(0 5 0 0 0 0.25u 0.5u)
+.tran 0.1u 2u
+.control
+run
+plot V(d) V(in)
+let I_D = -I(Vdd)
+let I_G = -I(Vin)
+plot I_D, V(in)/0.01meg
+.endc
+.end

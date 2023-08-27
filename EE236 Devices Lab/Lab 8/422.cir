@@ -1,0 +1,18 @@
+Param Rathour (190070049), Switching behaviour
+.include 2N3904.txt ; Includes BJT
+Q1 c b e 2n3904c
+Rb in b 1k
+Vin in gnd pulse(0 5 0 0 0 0.005m 0.01m)
+Vdd dd gnd 5
+Rc dd c 1k
+Ve e gnd 0
+.tran 0.01u 0.05m
+.control
+run
+plot V(c) V(in)
+let I_C = -I(Vdd)
+let I_B = -I(Vin)
+plot I_C, I_B
+.endc
+.end
+* 15.4420 - 15.0186 = 0.4234us

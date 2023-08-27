@@ -1,0 +1,16 @@
+Param Rathour (190070049), Shunt Clipper custom circuit
+
+.include Diode_1N914.txt   ; Includes Diode Model
+R1 out inp 1k               ; Resistor (assumed 1k)
+D1 out mid 1N914           ; Diode
+Vdc mid gnd dc 2          ; Independent DC source
+Vin inp inn sin(0 5 1k 0 0) ; AC source Vin
+Vc inn gnd dc 0.7
+.tran 0.01m 6m             ; Transient Analysis
+.control
+run
+* plot {V(inp)-V(inn)} V(out)
+plot V(out) vs {V(inp)-V(inn)}
+
+.endc
+.end

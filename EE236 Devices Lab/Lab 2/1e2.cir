@@ -1,0 +1,17 @@
+Param Rathour (190070049), Design from Transfer Characteristics
+
+.include Diode_1N914.txt   ; Includes Diode Model
+R1 out in 1k               ; Resistor (assumed 1k)
+D1 out mid1 1N914           ; Diode
+D2 mid2 out 1N914           ; Diode
+Vdc1 mid1 gnd dc 5          ; Independent DC source
+Vdc2 mid2 gnd dc -4.2          ; Independent DC source
+Vin in gnd sin(0 8 1k 0 0) ; AC source Vin
+.tran 0.01m 6m             ; Transient Analysis
+.control
+run
+* plot {V(inp)-V(inn)} V(out)
+plot V(out) vs V(in)
+
+.endc
+.end

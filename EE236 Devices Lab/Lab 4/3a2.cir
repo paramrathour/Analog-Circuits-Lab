@@ -1,0 +1,21 @@
+Param Rathour (190070049), Effect of R_S on I/V characteristics of Solar Cell
+.include Solar_Cell.txt ; Includes Solar Cell Model
+R1 in out 0
+IL gnd temp dc 8e-3
+d1 temp gnd diode
+.model diode d (is=(1e-13) n=1)
+d2 temp gnd diode2
+.model diode2 d (is=(2e-6) n=2)
+rs temp out 10
+rsh temp gnd 1e3
+Vdummy in gnd 0;
+.dc R1 1 500 0.1            ; DC Analysis
+.control
+* set temp = 35
+run
+let I_D = -I(Vdummy)
+let V_D = V(out)
+plot I_D vs V_D
+wrdata 3a2.txt I_D vs V_D
+.endc
+.end

@@ -1,0 +1,16 @@
+Param Rathour (190070049), Effect of Body Bias
+.include pmos.txt ; Includes Solar Cell Model
+M1 d g gnd b ALD1107
+VD mid gnd -200m
+Vdummy d mid 0
+VG g gnd 0
+VB b gnd 1
+.dc VG 0 -5 -0.01           ; DC Analysis
+.control
+run
+let I_D = I(Vdummy)
+let V_GS = V(g)
+plot I_D vs V_GS
+wrdata 312.txt I_D vs V_GS
+.endc
+.end

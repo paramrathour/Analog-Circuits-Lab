@@ -1,0 +1,17 @@
+Param Rathour (190070049), I_D - V_DS Characteristics of NMOS at V_GS = 2.5V
+.include NMOSFET.txt ; Includes Solar Cell Model
+.param Wn = {1.2u} Wp = {1.2u} Len = {0.4u}
+M1 d g gnd gnd NMOSFET L=Len W=Wn AS={2*Wn*Len} PS={2*Wn+4*Len} AD={2*Wn*Len} PD={2*Wn+4*Len}
+VD mid gnd 0.3
+Vdummy d mid 0
+VG g gnd 0
+.dc VG 0.3 3.3 0.01           ; DC Analysis
+.control
+run
+let I_D = -I(Vdummy)
+let V_DS = V(d)
+let V_GS = V(g)
+plot I_D vs V_GS
+wrdata 2a.txt I_D vs V_GS
+.endc
+.end

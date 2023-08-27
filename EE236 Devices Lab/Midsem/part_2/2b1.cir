@@ -1,0 +1,20 @@
+Param Rathour (190070049), Reverse Recovery Time of Diode 1N914
+
+.include Diode_1N914.txt ; Includes Diode Model
+R1 in mid1 100              ; Resistor
+R2 mid1 gnd 1k              ; Resistor
+R3 mid3 gnd 100             ; Resistor
+dR mid1 midR 1N914          ; Diode
+VdR midR mid3 0             ; Dummy Voltage to measure I_d
+Vin in gnd pulse(-5 5 0 0 0 0.05m 0.1m)             ; Pulsed input Vin
+.tran 0.01u 70u 49.9u            ; Transient Analysis
+.control
+run
+plot I(VdR) ;vs {V(mid1) - V(mid3)}
+* hardcopy 1c0.eps I(VdR)
+meas trans Imin MIN I(Vdr)
+meas trans t2 WHEN I(Vdr) = -1e-5 RISE = 1
+meas trans t1 WHEN I(Vdr) = Imin
+print t2 - t1
+.endc
+.end

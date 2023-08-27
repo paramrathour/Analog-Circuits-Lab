@@ -1,0 +1,16 @@
+Param Rathour (190070049), I/V characteristics of Zener Diode
+
+.include zener.txt ; Includes Diode Model
+R1 in mid1 100              ; Resistor
+R2 mid1 gnd 1k              ; Resistor
+R3 mid3 gnd 100             ; Resistor
+xR mid1 midR DI_1N4734A          ; Diode
+VdR midR mid3 0             ; Dummy Voltage to measure I_d
+Vin in gnd dc 0             ; DC source Vin
+.dc Vin -10 5 0.01            ; DC Analysis
+.control
+run
+plot I(VdR) vs {V(mid1) - V(mid3)}
+
+.endc
+.end

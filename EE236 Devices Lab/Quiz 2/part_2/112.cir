@@ -1,0 +1,29 @@
+Param Rathour (190070049), CMOS Inverter
+.include PMOS_NMOS.txt
+.param Wn = {1.2u} Wp = {2.868u} Len = {0.4u}
+.param Vd = 3.3 bn = 0.1 bp = 3.2
+* M drain gate source body cmos
+Mn mid1 in gnd basen cmosn L=Len W=Wn AS={2*Wn*Len} PS={2*Wn+4*Len} AD={2*Wn*Len} PD={2*Wn+4*Len}
+Mp mid2 in Vdd basep cmosp L=Len W=Wp AS={2*Wp*Len} PS={2*Wp+4*Len} AD={2*Wp*Len} PD={2*Wp+4*Len}
+C1 out gnd 200f
+Vdis out mid1 0
+Vcha out mid2 0
+Vdd Vdd gnd Vd
+Vbn basen gnd bn
+Vbp basep gnd bp
+Vin in gnd pulse(0 3.3v 0 500p 500p 4500p 10n)
+.tran 1p 30n; 20n
+.control
+run
+let I_discharge =  I(Vdis)
+let I_charge =  -I(Vcha)
+meas trans pdc MAX I_discharge
+meas trans pcc MAX I_charge
+plot V(out) vs V(in)
+* plot I_discharge
+* plot I_charge
+.endc
+.measure tran rise trig v(out) val=0.33 rise=1 targ v(out) val=2.97 rise=1
+.measure tran fall trig v(out) val=2.97 fall=1 targ v(out) val=0.33 fall=1
+.measure tran delay trig v(in) val=1.665 rise=2 targ v(out) val=1.665 fall=2
+.end

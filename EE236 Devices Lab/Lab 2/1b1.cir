@@ -1,0 +1,21 @@
+Param Rathour (190070049), Diode-Based Bridge Rectifier
+
+.include schottky_BAT85.txt            ; Includes Diode Model
+Vin in gnd sin(0 16.9705627 50 0 0) ; Source Vin
+
+x1 in outp BAT85                     ; Diode
+x2 outn in BAT85                     ; Diode
+x3 outn gnd BAT85                    ; Diode
+x4 gnd outp BAT85                    ; Diode
+RL outp outn 1k                       ; Resistor (assumed 1k)
+
+.tran 0.01m 0.12                     ; Transient Analysis
+.control
+run
+plot V(in) {V(outp) - V(outn)}
+plot {V(outp) - V(outn)} vs V(in)
+
+* hardcopy 21.eps V(in) {V(outp) - V(outn)}
+* hardcopy 22.eps {V(outp) - V(outn)} vs V(in)
+.endc
+.end

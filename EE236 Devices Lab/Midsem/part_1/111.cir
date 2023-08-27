@@ -1,0 +1,20 @@
+Param Rathour (190070049), I/V characteristics of Zener Diode
+
+.include BZT52C18S.txt ; Includes Diode Model
+R1 in mid1 100              ; Resistor
+R2 mid1 gnd 1k              ; Resistor
+R3 mid3 gnd 100             ; Resistor
+xR midR mid1 DI_BZT52C18S          ; Diode
+VdR midR mid3 0             ; Dummy Voltage to measure I_d
+Vin in gnd dc 0             ; DC source Vin
+.dc Vin -5 0 0.01 temp 20 80 10
+.control
+run
+let Vout = {V(mid1) - V(mid3)}
+plot I(VdR) vs Vout
+
+* let I1 = -0.5m
+* meas dc Vm FIND Vout WHEN I(VdR) = I1 
+wrdata 111.txt I(VdR) vs Vout
+.endc
+.end

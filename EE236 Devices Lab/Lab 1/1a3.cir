@@ -1,0 +1,29 @@
+Param Rathour (190070049), I/V characteristics of GREEN LED
+
+.include green_5mm.txt   ; Includes Diode Model
+R1 in mid1 100               ; Resistor
+R2 mid1 gnd 1k               ; Resistor
+R3 mid3 gnd 100               ; Resistor
+DG mid1 midG GREEN           ; Diode
+VdG midG mid3 0 ; Dummy Voltage to measure I_d
+Vin in gnd dc 0 ; DC source Vin
+.dc Vin 0 5 0.01             ; DC Analysis
+.control
+run
+plot I(VdG) vs {V(mid1) - V(mid3)}
+let I1 = 50u
+let I2 = 1m
+let I3 = 5m
+meas dc Vm1I1 FIND V(mid1)  WHEN I(VdG) = I1
+meas dc Vm3I1 FIND V(mid3)  WHEN I(VdG) = I1
+print Vm1I1-Vm3I1
+meas dc Vm1I2 FIND V(mid1)  WHEN I(VdG) = I2
+meas dc Vm3I2 FIND V(mid3)  WHEN I(VdG) = I2
+print Vm1I2-Vm3I2
+meas dc Vm1I3 FIND V(mid1)  WHEN I(VdG) = I3
+meas dc Vm3I3 FIND V(mid3)  WHEN I(VdG) = I3
+print Vm1I3-Vm3I3
+
+wrdata G.txt I(VdG) {V(mid1) - V(mid3)}
+.endc
+.end

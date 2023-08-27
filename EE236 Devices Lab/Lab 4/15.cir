@@ -1,0 +1,17 @@
+Param Rathour (190070049), I/V characteristics of Solar Cell
+.include Solar_Cell.txt ; Includes Solar Cell Model
+R1 mid out 100
+X1 out gnd solar_cell IL_val = 0          	; Solar Cell
+Vin in gnd dc 0             ; DC source Vin
+Vdummy in mid 0;
+.dc Vin -2 2 0.01            ; DC Analysis
+.control
+set temp = 75
+run
+let I_D = I(Vdummy)
+let V_D = V(out)
+plot I_D vs V_D
+plot log(abs(I_D)) vs V_D
+wrdata 15.txt I_D vs V_D
+.endc
+.end

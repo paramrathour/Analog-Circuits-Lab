@@ -1,0 +1,28 @@
+Param Rathour (190070049), Gummel Plot
+.include BC547.txt ; Includes BJT
+Q1 c b e bc547a
+VCE c e 5
+R2 c mid 1k
+IC cc mid 4.5m 
+Vcc cc gnd 10
+Vbb bb gnd 5
+R1 bb b 100k
+Ve e gnd 0
+.op
+.control
+run
+let V_t = 26m
+let I_C = -I(Vcc)
+let I_B = -I(Vbb)
+let V_A = {74.16444595209998}
+let g_m = I_C/V_t
+let beta = I_C/I_B
+let ro = V_A/I_C
+let rpi = beta/g_m
+print g_m, beta, rpi, ro
+.endc
+.end
+* g_m = 1.730769e-01 = 173m mhos
+* beta = 1.055129e+02 
+* rpi = 6.096300e+02 = 609ohms
+* ro = 1.648099e+04 = 16.48kohms

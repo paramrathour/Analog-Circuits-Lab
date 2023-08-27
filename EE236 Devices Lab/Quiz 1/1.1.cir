@@ -1,0 +1,26 @@
+Param Rathour (190070049), Full Wave Precision Rectifier Circuit
+
+.include OpAmp_UA741.txt ; Includes OpAmp Model
+.include black_box.txt ; Includes Black Box
+.include Diode_1N914.txt ; Includes Diode Model
+
+Vin in gnd sin(0 1 1k 0 0) 
+Vp1 p1 gnd dc 15
+Vn1 n1 gnd dc -15
+Vp2 p2 gnd dc 15
+Vn2 n2 gnd dc -15
+X1 in p1 n1 o1 gnd black_box
+R1 o1 ino 1k
+R2 in ino 2k
+R3 ino out 2k
+X2 gnd ino p2 n2 out UA741
+
+.tran 1u 5m            ; DC Analysis
+.control
+run
+plot V(out)
+plot V(out) vs V(in)
+
+* wrdata R.txt I(VdR) {V(mid1) - V(mid3)}
+.endc
+.end

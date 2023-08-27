@@ -1,0 +1,24 @@
+Param Rathour (190070049), Reverse Recovery Time of Diode RN142S
+
+.include RN142S.txt ; Includes Diode Model
+Vin in gnd sin(0 6 10M 0 0)             ; Pulsed input Vin
+C1 in mid1 100n
+dR mid2 mid1 DRN142S          ; Diode
+C2 mid2 mid4 100n
+VdR mid2 mid3 0             ; Dummy Voltage to measure I_d
+Vdout mid4 out 0             ; Dummy Voltage to measure I_d
+R1 mid1 gnd 500              ; Resistor
+R2 mid2 bi 500              ; Resistor
+Vbi bi gnd 0
+R3 mid4 gnd 50              ; Resistor
+
+.tran 0.00001u 0.07u ;0.0499u            ; Transient Analysis
+.control
+run
+plot V(out), I(Vdout),  I(VdR) ;vs {V(mid1) - V(mid3)}
+* meas trans Imin MIN I(Vdr)
+* meas trans t2 WHEN I(Vdr) = -1e-5 RISE = 1
+* meas trans t1 WHEN I(Vdr) = Imin
+* print t2 - t1
+.endc
+.end

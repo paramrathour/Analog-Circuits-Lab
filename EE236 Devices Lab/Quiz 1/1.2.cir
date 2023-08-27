@@ -1,0 +1,19 @@
+Param Rathour (190070049), Diode-Based Bridge Rectifier
+
+.include 1N4007.txt            ; Includes Diode Model
+Vin in gnd sin(0 15 1k 0 0) ; Source Vin
+
+D1 in outp DI_1N4007                     ; Diode
+D2 outn in DI_1N4007                     ; Diode
+D3 outn gnd DI_1N4007                    ; Diode
+D4 gnd outp DI_1N4007                    ; Diode
+RL outp outn 1k                       ; Resistor (assumed 1k)
+
+.tran 1u 5m                     ; Transient Analysis
+.control
+run
+plot {V(outp) - V(outn)}
+plot {V(outp) - V(outn)} vs V(in)
+
+.endc
+.end

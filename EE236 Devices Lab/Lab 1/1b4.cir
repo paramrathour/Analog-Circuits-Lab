@@ -1,0 +1,26 @@
+Param Rathour (190070049), I/V characteristics of WHITE LED
+
+.include white_5mm.txt   ; Includes Diode Model
+R1 in mid1 100               ; Resistor
+R2 mid1 gnd 1k               ; Resistor
+R3 mid3 gnd 100               ; Resistor
+DW mid1 midW WHITE           ; Diode
+VdW midW mid3 0 ; Dummy Voltage to measure I_d
+Vin in gnd dc 0 ; DC source Vin
+.dc Vin 0 5 0.01             ; DC Analysis
+.control
+run
+let Vout = V(mid1) - V(mid3)
+let VD1 = 2
+let VD2 = 2.5
+meas dc ID1 FIND I(VdW) WHEN Vout = VD1
+meas dc ID2 FIND I(VdW) WHEN Vout = VD2
+let lnID1 = log(ID1)
+let lnID2 = log(ID2)
+let eta = (VD2 - VD1) / ((26/1000) * (lnID2 - lnID1))
+print lnID2 - lnID1
+print eta
+plot log(abs(I(VdW))) vs Vout
+* wrdata W.txt log(abs(I(VdW))) Vout
+.endc
+.end

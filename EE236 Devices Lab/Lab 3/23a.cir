@@ -1,0 +1,32 @@
+Param Rathour (190070049), I/V characteristics of Solar Cell
+
+.include Solar_Cell.txt ; Includes Solar Cell Model
+
+R1 in out 0
+X1 out gnd solar_cell IL_val = 8e-3          	; Solar Cell
+Vdummy in gnd 0;
+.dc R1 1 500 0.1            ; DC Analysis
+.control
+run
+let I_D = -I(Vdummy)
+let V_D = V(out)
+let Power = I_D*V_D
+plot I_D vs V_D
+plot Power vs V_D
+let I_SC = minimum(I_D)
+let V_OC = maximum(V_D)
+let Pmax = minimum(Power)
+let FF = Pmax / (I_SC*V_OC)
+print I_SC V_OC FF
+* print Pmax -1.73040e-03
+* i_sc = -7.90431e-03
+* v_oc = 4.120659e-01
+* ff = 5.312704e-01
+* meas dc Vmin MIN V_D
+* meas dc I_SC FIND I_D WHEN V_D = Vmin
+* meas dc I_SC MIN I_D
+* meas dc I_MP FIND I_D WHEN Power = Pmax 
+* meas dc I_SC FIND I_D at = 1
+* meas dc I_SC MIN I_D FROM 1 to 500
+.endc
+.end

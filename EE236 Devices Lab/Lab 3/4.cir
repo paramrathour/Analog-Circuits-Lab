@@ -1,0 +1,47 @@
+Param Rathour (190070049), C-V characteristics of solar_cell
+
+.include Solar_Cell.txt ; Includes Solar Cell Model
+.include TL071.cir ; Includes OpAmp Model
+
+Vdc dc1 gnd dc 0
+Vin in gnd sin(0 0.5 1k 0 0) ; Source Vin
+Vp1 p1 gnd dc 12
+Vn1 n1 gnd dc -12
+Vp2 p2 gnd dc 12
+Vn2 n2 gnd dc -12
+R1 in ni1 10k
+R2 dc1 ni1 1k
+X1 gnd ni1 p1 n1 duti TL071
+RF ni1 duti 1k
+X2 duti duto solar_cell IL_val = 0          	; Solar Cell
+RFB duto out 10k
+CFB duto out 4.7n
+X3 gnd duto p2 n2 out TL071
+.dc Vdc 0 2 0.01            ; DC Analysis
+.control
+run
+let pi = 3.1415
+let k1 = 4.7n*(sqrt(1+1/(2*pi*1k*10k*4.7n)^2))
+let Cdut = abs({k1* V(out)/V(duti)})
+plot Cdut vs abs(V(dc1))
+let k2 = 2/(((8.85e-12)*11.68)*(1.602e-19))
+let area = (4e-2)^2
+let C = Cdut / area
+let y = 1/C^2
+plot 1/C^2 vs V(duti)
+let VD1 = -1.4
+let VD2 = -1.8
+meas dc C1 FIND y WHEN V(duti) = VD1
+meas dc C2 FIND y WHEN V(duti) = VD2
+let slope = (C2 - C1) / (VD2 - VD1)
+print slope
+let ND = k2/abs(slope)
+print ND
+* let yintercept = 0.00505435
+* meas dc yintercept FIND y WHEN V(duti) = 0
+let yintercept = C1 - slope*VD1
+* print yintercept
+let Vbi = yintercept*ND/k2
+print Vbi
+.endc
+.end

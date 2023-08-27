@@ -1,0 +1,16 @@
+Param Rathour (190070049), I/V characteristics of Diode X
+
+.include X.txt ; Includes Diode Model
+R1 in mid1 100              ; Resistor
+R2 mid1 gnd 1k              ; Resistor
+R3 mid3 gnd 100             ; Resistor
+D1 mid1 midR X          ; Diode
+VdR midR mid3 0             ; Dummy Voltage to measure I_d
+Vin in gnd dc 0             ; DC source Vin
+.dc Vin 0 5 0.01            ; DC Analysis
+.control
+run
+plot I(VdR) vs {V(mid1) - V(mid3)}
+* wrdata R.txt I(VdR) {V(mid1) - V(mid3)}
+.endc
+.end

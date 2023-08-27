@@ -1,0 +1,19 @@
+Param Rathour (190070049), V_out vs V_in NMOS pass gate
+.include PMOS_NMOS.txt 
+.param Wn = {4u} Wp = {4u} Len = {0.4u}
+* M drain gate source body cmos
+M1 d g s s cmosn L=Len W=Wn AS={2*Wn*Len} PS={2*Wn+4*Len} AD={2*Wn*Len} PD={2*Wn+4*Len}
+Vin in gnd 0
+Vs s in 0
+RL d gnd 10k
+VG g gnd 3.3
+.dc Vin -3.3 3.3 0.01           ; DC Analysis
+.control
+run
+let I_DS = I(Vs)
+let V_out = V(d) - V(s)
+let R_on = V_out/I_DS
+plot V_out
+plot R_on
+.endc
+.end
